@@ -22,13 +22,16 @@ static Manager m_mana = {
 	.SpawnAll  = SpawnAll,
 };
 
-/* static Manager変数 m_mana のアドレスを返す。 */
+/**
+ * staticな Manager変数 m_mana のアドレスを返す。
+ */
 extern const Manager* ManagerGetInstance(void)
 {
 	return &m_mana;
 }
 
-/* Human型変数を作成する。(Factory のラッパ関数）
+/**
+ * Human型変数を作成する。(Factory のラッパ関数）
  * makename が "Player" のとき、m_mana のメンバでそのアドレスを保持する。
  * @param <makename> 作成するHuman型変数の種類。
  * @return 作成した Human型変数のアドレス。
@@ -45,7 +48,8 @@ static Human* MakeHuman(const char* makename)
 	return newhuman;
 }
 
-/* Manager に Human型変数を追加する。
+/**
+ * Manager に Human型変数を追加する。
  * @param <addhuman> 追加する Human型変数のアドレス。
  * @return 追加した Human型変数の uid。
 */
@@ -59,7 +63,9 @@ static int AddHuman(Human* addhuman)
 	return addhuman->uid;//?
 }
 
-/* Manager に追加された Human型変数のアドレスからメモリを開放する。*/
+/**
+ * Manager に追加された Human型変数のアドレスからメモリを開放する。
+ */
 static void Cleanup(void)
 {
 	for (int i = 0; i < m_mana.humansSize; ++i) {
@@ -70,7 +76,8 @@ static void Cleanup(void)
 	m_mana.uniqueID = 0;
 }
 
-/* Manager に追加されているすべてのHuman型変数を初期化。
+/**
+ * Manager に追加されているすべてのHuman型変数を初期化。
  * Manager に追加されている Human型変数のメンバ関数を実行する
 */
 static int InitAll(void)
@@ -82,7 +89,8 @@ static int InitAll(void)
 	return 1;
 }
 
-/* Manager に追加されているすべてのHuman型変数を行動させる。
+/**
+ * Manager に追加されているすべてのHuman型変数を行動させる。
  * Manager に追加されている Human型変数のメンバ関数を実行する
 */
 static int ActionAll(void)
@@ -94,7 +102,8 @@ static int ActionAll(void)
 	return 1;
 }
 
-/* Manager に追加されているすべてのHuman型変数を更新する。
+/**
+ * Manager に追加されているすべてのHuman型変数を更新する。
  * Manager に追加されている Human型変数のメンバ関数を実行する
 */
 static int UpdateAll(void)
@@ -106,7 +115,8 @@ static int UpdateAll(void)
 	return 1;
 }
 
-/* Manager に追加されているすべてのHuman型変数を描画する。
+/**
+ * Manager に追加されているすべてのHuman型変数を描画する。
  * Manager に追加されている Human型変数のメンバ関数を実行する
 */
 static int PrintAll(void)
@@ -118,7 +128,8 @@ static int PrintAll(void)
 	return 1;
 }
 
-/* humans[] に格納された全てのキャラクターをランダムに配置する。
+/**
+ * humans[] に格納された全てのキャラクターをランダムに配置する。
  * プレイヤーは配置しない。
  * キャラクターは 構築済み（なハズ）のウェイポイント上に置かれる。
  */
@@ -133,28 +144,28 @@ static int SpawnAll(void)
 	for (int i = 0; i < m_mana.humansSize; ++i)
 	{
 		human = m_mana.humans[i];
-		if (human == m_mana.player)/*　プレイヤーはとばす　*/
+		if (human == m_mana.player)// プレイヤーはとばす
 			continue;
 
 		do {
 			loop = false;
-			/* ウェイポイント配列からランダムなウェイポイントの座標を得る */
-			pos  = wpd->points[ CommonGetRandom(0, wpd->elems - 1) ].pos;
-			/* pos が重複しないかを走査 */
+			// ウェイポイント配列からランダムなウェイポイントの座標を得る
+			pos = wpd->points[ CommonGetRandom(0, wpd->elems - 1) ].pos;
+			// pos がhumans[]内のキャラクターの座標と重複しないかを走査
 			for (int j = 0; j < m_mana.humansSize; ++j)
 			{
 				Human *h = m_mana.humans[j];
-				if (human == h)/* 自分自身であればとばす */
+				if (human == h)// 自分自身であればとばす
 					continue;
 				if (h->pos.y == pos.y && h->pos.x == pos.x)
 				{
-					/* 重複する場合、座標の取得からやり直す */
+					// 重複する場合、座標の取得からやり直す
 					loop = true;
 					break;
 				}
 			}
 		} while (loop);
-		/* 重複しない座標をセット */
+		// 重複しない座標をセット
 		human->pos = pos;
 	}
 	return 1;
