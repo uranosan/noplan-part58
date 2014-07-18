@@ -308,8 +308,8 @@ extern int HumanCollideTo(Human *human, Human **collided, int y, int x, int dir)
 	int step;
 	int saY, saX;
 	int i, j, k, index, offs;
-	int tempHuman[NUM_HUMAN_HEIGHT * NUM_HUMAN_WIDTH + 1];// パーツ配列要素数分＋番兵 
-	int tempTo[NUM_HUMAN_HEIGHT * NUM_HUMAN_WIDTH + 1];// パーツ配列要素数分＋番兵
+	int tempHuman[NUM_HUMAN_HEIGHT * NUM_HUMAN_WIDTH + 1];// パーツ配列要素数分＋番兵。 
+	int tempTo[NUM_HUMAN_HEIGHT * NUM_HUMAN_WIDTH + 1];// パーツ配列要素数分＋番兵。
 
 	to = 0;
 	for (step = 0; step < manager->humansSize; ++step)
