@@ -84,7 +84,7 @@ extern int GameMenu(void)
 	int key;
 	int cursor = 0;
 
-	// ƒƒjƒ…[‰æ–Ê‰Šú‰»B
+	// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ç”»é¢åˆæœŸåŒ–ã€‚
 	ConsoleFillRect( 0, 0, NUM_WINDOW_HEIGHT, NUM_WINDOW_WIDTH, BLACK, BLACK, " ");
 	int endy = PrintPointerStrings(titley, titlex, L_WHITE, BLACK, title, titleMax);
 	PrintMenu(endy + menusPaddingTop, menusx, L_WHITE, BLACK, menus, menusMax, cursor);
@@ -92,9 +92,9 @@ extern int GameMenu(void)
 
 	while (true)
 	{
-		// “ü—ÍB
+		// å…¥åŠ›ã€‚
 		key = KeyWait();
-		// XVB
+		// æ›´æ–°ã€‚
 		if (key == NUM_KEY_EXIT)
 			return NUM_GAME_EXIT;
 		else if (key == NUM_KEY_UP)
@@ -107,7 +107,7 @@ extern int GameMenu(void)
 			if (cursor == 1) return NUM_GAME_EXIT;
 		}
 
-		// •`‰æB
+		// æç”»ã€‚
 		ConsoleFillRect( 0, 0, NUM_WINDOW_HEIGHT, NUM_WINDOW_WIDTH, BLACK, BLACK, " ");
 		int endy = PrintPointerStrings(titley, titlex, L_WHITE, BLACK, title, titleMax);
 		PrintMenu(endy + menusPaddingTop, menusx, L_WHITE, BLACK, menus, menusMax, cursor);
@@ -129,26 +129,26 @@ extern void GameEnding(void)
 	const int youwiny = 10;
 	const int youwinx = NUM_WINDOW_WIDTH/2 - youwinWidth/2;
 
-	// ƒ_ƒuƒ‹ƒoƒbƒtƒ@‚Ì‘|œB
+	// ãƒ€ãƒ–ãƒ«ãƒãƒƒãƒ•ã‚¡ã®æƒé™¤ã€‚
 	ConsoleFillRect(0, 0, NUM_WINDOW_HEIGHT, NUM_WINDOW_WIDTH, BLACK, BLACK, " ");
 	ConsoleFlip();
-	// ƒGƒ“ƒfƒBƒ“ƒO‰æ–Ê‚Ì‰Šú‰»B	
+	// ã‚¨ãƒ³ãƒ‡ã‚£ãƒ³ã‚°ç”»é¢ã®åˆæœŸåŒ–ã€‚	
 	ConsoleFillRect(0, 0, NUM_WINDOW_HEIGHT, NUM_WINDOW_WIDTH, BLACK, BLACK, " ");
 	PrintPointerStrings(youwiny, youwinx, L_WHITE, BLACK, youwin, youwinMax);
 	ConsoleFlip();
 
 	while (true)
 	{
-		// “ü—ÍB
+		// å…¥åŠ›ã€‚
 		int key = KeyWait();
-		// XVB
-		// “ñ‰ñUŒ‚ƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½‚çI—¹B
+		// æ›´æ–°ã€‚
+		// äºŒå›æ”»æ’ƒãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ãŸã‚‰çµ‚äº†ã€‚
 		if (key == NUM_KEY_ATTACK)
 		{
 			if (KeyWait() == NUM_KEY_ATTACK)
 				break;
 		}
-		// •`‰æB
+		// æç”»ã€‚
 		ConsoleFillRect
 			(0, 0, NUM_WINDOW_HEIGHT, NUM_WINDOW_WIDTH, BLACK, BLACK, " ");
 		PrintPointerStrings(youwiny, youwinx, L_WHITE, BLACK, youwin, youwinMax);
@@ -156,17 +156,17 @@ extern void GameEnding(void)
 	}
 }
 
-// ƒQ[ƒ€ƒGƒ“ƒgƒŠ[
+// ã‚²ãƒ¼ãƒ ã‚¨ãƒ³ãƒˆãƒªãƒ¼
 extern int GameMain(void)
 {
-	// ƒvƒƒOƒ‰ƒ€ŠJn‚Ìˆ—
+	// ãƒ—ãƒ­ã‚°ãƒ©ãƒ é–‹å§‹æ™‚ã®å‡¦ç†
 	GameUpdate();
 	GamePrint();
 
-	// ƒQ[ƒ€ƒ‹[ƒv
+	// ã‚²ãƒ¼ãƒ ãƒ«ãƒ¼ãƒ—
 	while (1)
 	{
-		// ƒL[“ü—Í‚ª‚ ‚é‚Ü‚Å‘Ò‹@
+		// ã‚­ãƒ¼å…¥åŠ›ãŒã‚ã‚‹ã¾ã§å¾…æ©Ÿ
 		int key = KeyWait();
 
 		if (key == NUM_KEY_EXIT)
@@ -175,19 +175,19 @@ extern int GameMain(void)
 		}
 		else if (key > NUM_KEY_WRAP_START && key < NUM_KEY_WRAP_END)
 		{
-			// ‘S‚Ä‚ÌƒLƒƒƒ‰ƒNƒ^[‚ğs“®‚³‚¹‚éB
+			// å…¨ã¦ã®ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã‚’è¡Œå‹•ã•ã›ã‚‹ã€‚
 			m_manager->ActionAll();
-			// ƒQ[ƒ€XV
+			// ã‚²ãƒ¼ãƒ æ›´æ–°
 			GameUpdate();
-			// ƒQ[ƒ€•`‰æ
+			// ã‚²ãƒ¼ãƒ æç”»
 			GamePrint();
 		}
 		else if (key == NUM_KEY_MENU)
 		{
-			// ƒƒjƒ…[–³ŒÀƒ‹[ƒv 
+			// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ç„¡é™ãƒ«ãƒ¼ãƒ— 
 			if (UIMenuLoop() == NUM_KEY_EXIT)
 				return NUM_GAME_RESTART;
-			GamePrint();// ƒƒjƒ…[‚Ì•\¦‚ğ‚¨‘|œ 
+			GamePrint();// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®è¡¨ç¤ºã‚’ãŠæƒé™¤ 
 		}
 		else if (key == NUM_KEY_STAGE_CHANGE)//debug
 		{
@@ -201,7 +201,7 @@ extern int GameMain(void)
 		else if (key == NUM_KEY_DEBUG_1)//debug
 		{
 			m_currentStage += NUM_ZOMBIE_SPAWN_STAGE;
-			// Œ»İ‚ÌƒXƒe[ƒWƒJƒEƒ“ƒg‚ªÅ‘å”ˆÈã‚¾‚Á‚½‚çA
+			// ç¾åœ¨ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã‚«ã‚¦ãƒ³ãƒˆãŒæœ€å¤§æ•°ä»¥ä¸Šã ã£ãŸã‚‰ã€
 			if ( m_currentStage >= m_maxStage )
 			{
 				return NUM_GAME_ENDING;
@@ -212,7 +212,7 @@ extern int GameMain(void)
 		if (m_playerIsGoal)
 		{
 			m_currentStage++;
-			// Œ»İ‚ÌƒXƒe[ƒWƒJƒEƒ“ƒg‚ªÅ‘å”ˆÈã‚¾‚Á‚½‚çA
+			// ç¾åœ¨ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã‚«ã‚¦ãƒ³ãƒˆãŒæœ€å¤§æ•°ä»¥ä¸Šã ã£ãŸã‚‰ã€
 			if ( m_currentStage >= m_maxStage )
 			{
 				return NUM_GAME_ENDING;
@@ -238,7 +238,7 @@ static void GameReStart(void)
 {
 	const char* message = "now loading...";
 
-	/*@unow loading...v‚ğ‰æ–Ê’†‰›‚É•\¦‚·‚éB@*/
+	/*ã€€ã€Œnow loading...ã€ã‚’ç”»é¢ä¸­å¤®ã«è¡¨ç¤ºã™ã‚‹ã€‚ã€€*/
 	GamePrint();
 	ConsolePrintFormat(
 		NUM_WINDOW_HEIGHT / 2,
@@ -249,65 +249,65 @@ static void GameReStart(void)
 	);
 	ConsoleFlip();
 
-	/* ƒS[ƒ‹ƒtƒ‰ƒO‚Ì‰Šú‰» */
+	/* ã‚´ãƒ¼ãƒ«ãƒ•ãƒ©ã‚°ã®åˆæœŸåŒ– */
 	m_playerIsGoal = false;
-	/* ƒ}ƒbƒvAƒLƒƒƒ‰ƒNƒ^[‚Ì‰Šú‰» */
+	/* ãƒãƒƒãƒ—ã€ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®åˆæœŸåŒ– */
 	MapCleanup();
 	MapInit();
-	// Œ»İ‚ÌƒXƒe[ƒW‚ªA‚R‚Ì”{”‚¾‚Á‚½‚çA
+	// ç¾åœ¨ã®ã‚¹ãƒ†ãƒ¼ã‚¸ãŒã€ï¼“ã®å€æ•°ã ã£ãŸã‚‰ã€
 	if ( m_currentStage > 0 && m_currentStage % NUM_ZOMBIE_SPAWN_STAGE == 0 )
 	{
-		// ƒQ[ƒ€‚Éƒ]ƒ“ƒr‚ğN‘Ì’Ç‰ÁB
+		// ã‚²ãƒ¼ãƒ ã«ã‚¾ãƒ³ãƒ“ã‚’Nä½“è¿½åŠ ã€‚
 		if (debug) ConsolePushStrStack( "Add Zombie. %s %d",__FILE__,__LINE__);
 		m_manager->AddHuman( m_manager->MakeHuman("Zombie") );
 	}
-	m_manager->InitAll();// ‘S‚Ä‚ÌƒLƒƒƒ‰ƒNƒ^[‚ğ‰Šú‰»B
-	m_manager->SpawnAll();// ‘S‚Ä‚ÌƒLƒƒƒ‰ƒNƒ^[‚ğ”z’uB
-	/*@XV‚Æ•`‰æ@*/
+	m_manager->InitAll();// å…¨ã¦ã®ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã‚’åˆæœŸåŒ–ã€‚
+	m_manager->SpawnAll();// å…¨ã¦ã®ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã‚’é…ç½®ã€‚
+	/*ã€€æ›´æ–°ã¨æç”»ã€€*/
 	GameUpdate();
 	GamePrint();
 }
 
-// ƒQ[ƒ€‚ğ‰Šú‰»
+// ã‚²ãƒ¼ãƒ ã‚’åˆæœŸåŒ–
 extern void GameInit(void)
 {
 	m_manager = (Manager*) ManagerGetInstance();
 	srand((unsigned int)time(NULL));
-	/* ó‘Ô‚Ì‰Šú‰»B */
+	/* çŠ¶æ…‹ã®åˆæœŸåŒ–ã€‚ */
 	m_currentStage = NUM_INIT_STAGE;
-	/* ƒ}ƒbƒv‚Ì‰Šú‰»B */
+	/* ãƒãƒƒãƒ—ã®åˆæœŸåŒ–ã€‚ */
 	MapInit();
-	/* ƒ}ƒbƒv‚ÌƒEƒFƒCƒ|ƒCƒ“ƒg‚©‚çƒXƒe[ƒW‚ÌÅ‘å”‚ğŒvZB */
+	/* ãƒãƒƒãƒ—ã®ã‚¦ã‚§ã‚¤ãƒã‚¤ãƒ³ãƒˆã‹ã‚‰ã‚¹ãƒ†ãƒ¼ã‚¸ã®æœ€å¤§æ•°ã‚’è¨ˆç®—ã€‚ */
 	struct WayPointData* wpd = MapGetWayPointData();
 	m_maxStage = (wpd->elems - NUM_DEFAULT_HUMANS) * NUM_ZOMBIE_SPAWN_STAGE;
 	m_maxStage = (NUM_MAX_STAGE % m_maxStage);
 
-	/* ƒLƒƒƒ‰ƒNƒ^[‚ğì¬Aƒ}ƒl[ƒWƒƒ[‚Ì”z—ñ‚ÉŠi”[B */
+	/* ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã‚’ä½œæˆã€ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã®é…åˆ—ã«æ ¼ç´ã€‚ */
 	m_manager->AddHuman( m_manager->MakeHuman("Player") );
 	m_manager->AddHuman( m_manager->MakeHuman("Hiroin") );
 	for (int i=0; i<NUM_DEFAULT_ZOMBIES; ++i)
 		m_manager->AddHuman( m_manager->MakeHuman("Zombie") );
-	/* ‘S‚Ä‚ÌƒLƒƒƒ‰ƒNƒ^[‚Ì‰ŠúÀ•W‚ğİ’èB */
+	/* å…¨ã¦ã®ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®åˆæœŸåº§æ¨™ã‚’è¨­å®šã€‚ */
 	m_manager->SpawnAll();
 }
 
-// ƒQ[ƒ€XV
+// ã‚²ãƒ¼ãƒ æ›´æ–°
 static void GameUpdate(void)
 {
-	// ƒLƒƒƒ‰ƒNƒ^[‘S‚Ä‚ğXVB
+	// ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼å…¨ã¦ã‚’æ›´æ–°ã€‚
 	m_manager->UpdateAll();
-	// ƒvƒŒƒCƒ„[‚ª€‚ñ‚Å‚¢‚é‚È‚çƒXƒ^[ƒg’n“_‚É‹­§‘—ŠÒ
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒæ­»ã‚“ã§ã„ã‚‹ãªã‚‰ã‚¹ã‚¿ãƒ¼ãƒˆåœ°ç‚¹ã«å¼·åˆ¶é€é‚„
 	if ( m_manager->player->state.isDead )
 	{
 		PlayerInit( m_manager->player );
 		PlayerUpdate( m_manager->player );
-		EffectPrint();// ƒGƒtƒFƒNƒg‚Ì•`‰æiƒXƒ^ƒbƒN‚ğ‘S‚Äƒ|ƒbƒvj
+		EffectPrint();// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®æç”»ï¼ˆã‚¹ã‚¿ãƒƒã‚¯ã‚’å…¨ã¦ãƒãƒƒãƒ—ï¼‰
 	}
-	// •`‰æˆÊ’u‚ğXV
+	// æç”»ä½ç½®ã‚’æ›´æ–°
 	GameUpdatePrintPos();
 	// UI
 	UIUpdate();
-	// ƒS[ƒ‹”»’èB
+	// ã‚´ãƒ¼ãƒ«åˆ¤å®šã€‚
 	Position goalPos   = MapGetGoalSpawnPos();	
 	Position playerPos = m_manager->player->pos;
 	if (playerPos.y == goalPos.y && playerPos.x == goalPos.x)
@@ -322,13 +322,13 @@ static void GameUpdate(void)
 	}
 }
 
-// ƒQ[ƒ€•`‰æ
+// ã‚²ãƒ¼ãƒ æç”»
 static void GamePrint(void)
 {
 	MapPrint();
 	m_manager->PrintAll();
 
-	EffectPrint();// ƒGƒtƒFƒNƒg‚Ì•`‰æiƒXƒ^ƒbƒN‚ğ‘S‚Äƒ|ƒbƒvj
+	EffectPrint();// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®æç”»ï¼ˆã‚¹ã‚¿ãƒƒã‚¯ã‚’å…¨ã¦ãƒãƒƒãƒ—ï¼‰
 	UIPrint();
 	if (debug)
 	{
@@ -340,63 +340,63 @@ static void GamePrint(void)
 	}	
 	ConsolePrintStrStack();//debug
 	
-	ConsoleFlip();// •`‰æÏ‚İ‚Ì‰æ–Ê‚Æ•\¦’†‚Ì‰æ–Ê‚ğØ‚è‘Ö‚¦
+	ConsoleFlip();// æç”»æ¸ˆã¿ã®ç”»é¢ã¨è¡¨ç¤ºä¸­ã®ç”»é¢ã‚’åˆ‡ã‚Šæ›¿ãˆ
 }
 
-// ƒQ[ƒ€“àƒIƒuƒWƒFƒNƒg‚Ì•`‰æˆÊ’u‚ğXV
+// ã‚²ãƒ¼ãƒ å†…ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æç”»ä½ç½®ã‚’æ›´æ–°
 static void GameUpdatePrintPos(void)
 {
 	const int	areaHeight = NUM_WINDOW_HEIGHT; 
 	const int	areaWidth  = NUM_WINDOW_WIDTH / 2;
-	int			sy, ey, sx, ex;	// ƒ}ƒbƒv‚Ì•`‰æˆÊ’uƒIƒtƒZƒbƒg
-	int			py, px;			// ƒvƒŒƒCƒ„‚Ì•`‰æˆÊ’u
+	int			sy, ey, sx, ex;	// ãƒãƒƒãƒ—ã®æç”»ä½ç½®ã‚ªãƒ•ã‚»ãƒƒãƒˆ
+	int			py, px;			// ãƒ—ãƒ¬ã‚¤ãƒ¤ã®æç”»ä½ç½®
 	Position	playPos = {};
 	playPos = m_manager->player->pos;
 
 	const int say = NUM_HUMAN_HEIGHT / 2;
 	const int sax = NUM_HUMAN_WIDTH / 2;
 
-	// ƒvƒŒƒCƒ„[‚ÌˆÊ’u‚©‚çƒ}ƒbƒv‚Ì•`‰æƒIƒtƒZƒbƒg‚ÆAƒvƒŒƒCƒ„[‚Ì•`‰æˆÊ’u‚ğŠl“¾ 
-	// Y²
-	if (playPos.y < areaHeight / 2 - say)// ƒvƒŒƒCƒ„[‚ªƒEƒBƒ“ƒhƒEã’[‚É‚¢‚éê‡
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ä½ç½®ã‹ã‚‰ãƒãƒƒãƒ—ã®æç”»ã‚ªãƒ•ã‚»ãƒƒãƒˆã¨ã€ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æç”»ä½ç½®ã‚’ç²å¾— 
+	// Yè»¸
+	if (playPos.y < areaHeight / 2 - say)// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ä¸Šç«¯ã«ã„ã‚‹å ´åˆ
 	{
 		sy = 0;
 		ey = areaHeight;
 		py = playPos.y;
 	}
-	else if (playPos.y > (NUM_MAP_HEIGHT - areaHeight / 2) - say)// ‰º’[
+	else if (playPos.y > (NUM_MAP_HEIGHT - areaHeight / 2) - say)// ä¸‹ç«¯
 	{
 		sy = NUM_MAP_HEIGHT - areaHeight;
 		ey = NUM_MAP_HEIGHT;
 		py = areaHeight / 2 + (areaHeight / 2 - (NUM_MAP_HEIGHT - playPos.y));
 	}
-	else// ‚»‚êˆÈŠO
+	else// ãã‚Œä»¥å¤–
 	{
 		sy = playPos.y - areaHeight / 2 + say;
 		ey = playPos.y + areaHeight / 2 + say;
 		py = areaHeight / 2 - say;
 	}
 	
-	// X²
-	if (playPos.x < areaWidth / 2 - sax){// ¶’[
+	// Xè»¸
+	if (playPos.x < areaWidth / 2 - sax){// å·¦ç«¯
 	
 		sx = 0;
 		ex = areaWidth;
 		px = playPos.x;
 	}
-	else if (playPos.x > (NUM_MAP_WIDTH - areaWidth / 2) - sax)//‰E’[
+	else if (playPos.x > (NUM_MAP_WIDTH - areaWidth / 2) - sax)//å³ç«¯
 	{
 		sx = NUM_MAP_WIDTH - areaWidth;
 		ex = NUM_MAP_WIDTH;
 		px = areaWidth / 2 + (areaWidth / 2 - (NUM_MAP_WIDTH - playPos.x));
 	}
-	else// ‚»‚êˆÈŠO
+	else// ãã‚Œä»¥å¤–
 	{
 		sx = playPos.x - areaWidth / 2 + sax;
 		ex = playPos.x + areaWidth / 2 + sax;
 		px = areaWidth / 2 - sax;
 	}
-	// Šl“¾‚µ‚½•`‰æˆÊ’u‚ğƒZƒbƒg
+	// ç²å¾—ã—ãŸæç”»ä½ç½®ã‚’ã‚»ãƒƒãƒˆ
 	m_manager->player->printPos.y = py;
 	m_manager->player->printPos.x = px;
 	MapSetPrintStartPos	(sy, sx);

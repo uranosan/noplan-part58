@@ -1,13 +1,13 @@
 PROGRAM		= a.exe
 CC 			= gcc
 # FLAGS		= -std=c99 -Wall
-FLAGS		= -std=c11 -Wall
+FLAGS		= -std=c11 -Wall -g
 
 SOURCE		= Main.c GameMain.c Common.c Console.c KeyInput.c UI.c \
-                  Map.c Human.c Player.c Npc.c Hiroin.c Zombie.c \
-                  Effect.c \
-                  List.c Maze.c \
-                  Manager.c Factory.c
+              Map.c Human.c Player.c Npc.c Hiroin.c Zombie.c \
+              Effect.c \
+              List.c Maze.c \
+              Manager.c Factory.c
 
 HEADER		= $(SOURCE:%.c=%.h)
 OBJS		= $(SOURCE:%.c=%.o)

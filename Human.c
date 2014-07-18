@@ -1,11 +1,15 @@
 #include "Human.h"
 
+static const bool debug = false;
+
 /*-----------------------------------------------------------------------------
   Human: Static Functions
   ---------------------------------------------------------------------------*/
 
-/* キャラクターの状態からparts[]の基点添え字を返す。範囲外なら０を返す。
- * @param	dir		キャラクターの向き
+/**
+ * キャラクターの状態からparts[]の基点添え字を返す。範囲外なら０を返す。
+ * @param dir キャラクターの向き
+ * @param isAttack キャラクターの攻撃状態
  */
 static int GetPartsOrigin(int dir, int isAttack)
 {
@@ -21,7 +25,12 @@ static int GetPartsOrigin(int dir, int isAttack)
   Human: Extern Functions
   ---------------------------------------------------------------------------*/
 
-/* Human型変数を topos にむけて移動させる。移動には衝突判定、向き変更を伴う */
+/**
+ * Human型変数を topos にむけて移動させる。移動には衝突判定、doRotateが真の場合は向き変更を伴う
+ * @param human
+ * @param topos
+ * @param doRotate
+ */
 extern int HumanMoveToPos(Human *human, Position topos, bool doRotate)
 {
 	Direction dir = human->state.dir;
@@ -59,14 +68,15 @@ extern int HumanMoveToPos(Human *human, Position topos, bool doRotate)
 	return 0;// 移動に失敗
 }
 
-/* Human型変数を初期化
- * @param	human		初期化するHuman型変数
- * @param	name		名前
- * @param	gid			グループＩＤ
- * @param	y			初期座標Ｙ
- * @param	x			初期座標Ｘ
- * @param	parrec		PartsRecord型配列。パーツの初期化で使用。
- * @param	parrecSize	parrecの要素数
+/**
+ * Human型変数を初期化
+ * @param human 初期化するHuman型変数
+ * @param name 名前
+ * @param gid グループＩＤ
+ * @param y 初期座標Ｙ
+ * @param x 初期座標Ｘ
+ * @param parrec PartsRecord型配列。パーツの初期化で使用。
+ * @param parrecSize parrecの要素数
  */
 extern int HumanInit(Human *human, const char *name, int gid, int y, int x, PartsRecord *parrec, int parrecSize)
 {
@@ -74,12 +84,12 @@ extern int HumanInit(Human *human, const char *name, int gid, int y, int x, Part
 	*human = emptyHuman;
 
 	snprintf(human->name, sizeof(human->name), "%s", name);// 名前
-	human->health		= 100;	// 体力
-	human->gid			= gid;	// グループＩＤ
-	human->pos.y		= y;	// 座標Ｙ
-	human->pos.x		= x;	// 座標Ｘ
-	human->state.dir	= SOUTH;// 向き
-	human->partsOrigin  = 0;
+	human->health = 100;// 体力
+	human->gid = gid;// グループＩＤ
+	human->pos.y = y;// 座標Ｙ
+	human->pos.x = x;// 座標Ｘ
+	human->state.dir = SOUTH;// 向き
+	human->partsOrigin = 0;// 
 
 	// パーツの初期化
 	int m, n;
@@ -93,9 +103,9 @@ extern int HumanInit(Human *human, const char *name, int gid, int y, int x, Part
 			human->parts[ i ].pos.x = i % NUM_HUMAN_WIDTH;
 		}
 		snprintf(human->parts[ i ].str, sizeof(human->parts[ i ].str), "%s", parrec[ m ].str[ n ]);
-		human->parts[ i ].value				= parrec[ m ].value[ n ];
-		human->parts[ i ].color.fore		= parrec[ m ].colorFore[ n ];
-		human->parts[ i ].color.back		= parrec[ m ].colorBack[ n ];
+		human->parts[ i ].value = parrec[ m ].value[ n ];
+		human->parts[ i ].color.fore = parrec[ m ].colorFore[ n ];
+		human->parts[ i ].color.back = parrec[ m ].colorBack[ n ];
 		human->parts[ i ].color.foreIsAlpha = parrec[ m ].colorForeIsAlpha[ n ];
 		human->parts[ i ].color.backIsAlpha = parrec[ m ].colorBackIsAlpha[ n ];
 	}
@@ -104,7 +114,8 @@ extern int HumanInit(Human *human, const char *name, int gid, int y, int x, Part
 	return 1;
 }
 
-/* Human型変数の状態を更新
+/**
+ * Human型変数の状態を更新
  * @param	human
  */
 extern int HumanUpdate(Human *human)
@@ -138,13 +149,16 @@ extern int HumanUpdate(Human *human)
 		int fx = (human->pos.x + human->parts[index].pos.x) % NUM_MAP_WIDTH;
 		Colorset mapcolor = MapGetFieldColor( fy, fx );
 
-		if (human->parts[index].color.foreIsAlpha) human->parts[index].color.fore = mapcolor.fore;
-		if (human->parts[index].color.backIsAlpha) human->parts[index].color.back = mapcolor.back;
+		if (human->parts[index].color.foreIsAlpha)
+			human->parts[index].color.fore = mapcolor.fore;
+		if (human->parts[index].color.backIsAlpha)
+			human->parts[index].color.back = mapcolor.back;
 	}
 	return 1;
 }
 
-/* Human型変数を裏画面に描画
+/**
+ * Human型変数を裏画面に描画
  * @param	*human
  * @param	orgy	描画位置オリジンＹ
  * @param	orgx	描画位置オリジンＸ
@@ -170,14 +184,15 @@ extern int HumanPrint(Human * human, int orgy, int orgx)
 	return 1;
 }
 
-/* Human型変数のパーツ文字列が、ゲーム画面内に描画できるかを調べる。
+/**
+ * Human型変数のパーツ文字列が、ゲーム画面内に描画できるかを調べる。
  * 描画できる場合、引数のprintPosへ描画位置を格納する。
  * 描画できない場合、引数のprintPosへ-1を格納する。
  *
- * @ret					描画できるなら１。できなければ０
- * @param	*human		パーツを保持するHumanへのアドレス
- * @param	*printPos	描画座標を格納する変数へのアドレス
- * @param	partsIndex	パーツの添え字
+ * @return 描画できるなら１。できなければ０
+ * @param *human パーツを保持するHumanへのアドレス
+ * @param *printPos 描画座標を格納する変数へのアドレス
+ * @param partsIndex パーツの添え字
  */
 extern int HumanCanPrintParts(Human *human, Position *printPos, int partsIndex)
 {
@@ -214,7 +229,8 @@ extern int HumanCanPrintParts(Human *human, Position *printPos, int partsIndex)
 	}
 }
 
-/* Human型変数の座標を、引数の座標で更新
+/**
+ * Human型変数の座標を、引数の座標で更新
  * @param	*human
  * @param	y		更新させる座標Ｙ
  * @param	x		更新させる座標Ｘ
@@ -226,8 +242,9 @@ extern int HumanMove(Human * human, int y, int x)
 	return 1;
 }
 
-/* Human型変数が、引数の座標上に移動できるかを判定
- * @ret		移動可能なら真。できなければ偽。
+/**
+ * Human型変数が、引数の座標上に移動できるかを判定
+ * @return		移動可能なら真。できなければ偽。
  * @param	*human	
  * @param	y		
  * @param	x		
@@ -260,10 +277,11 @@ extern int HumanCanMove(Human *human, int y, int x, int dir)
 	return 1;// 移動できる
 }
 
-/* 回転できるかを調べる
- * @ret				回転できるなら１。できなければ０
- * @param	*human	回転させようとしているHumanへのアドレス
- * @param	dir		回転させる方向
+/**
+ * 回転できるかを調べる
+ * @return 回転できるなら１。できなければ０
+ * @param *human 回転させようとしているHumanへのアドレス
+ * @param dir 回転させる方向
  */
 extern int HumanCanRotate(Human *human, int dir)
 {
@@ -274,23 +292,24 @@ extern int HumanCanRotate(Human *human, int dir)
 	return 1;// 回転できる
 }
 
-/* Human型変数同士の衝突判定
- * @ret					衝突ありなら０、なしなら１
- * @param *human		衝突する側
- * @param *collided		衝突時の衝突対象を格納させるポインタのアドレス
- * @param y      		*humanが移動したい座標Y
- * @param y      		*humanが移動したい座標X
- * @param dir			*humanが向きたい方向
+/**
+ * Human型変数同士の衝突判定
+ * @return 衝突ありなら０、なしなら１
+ * @param *human 衝突する側
+ * @param *collided 衝突時の衝突対象を格納させるポインタのアドレス
+ * @param y *humanが移動したい座標Y
+ * @param y *humanが移動したい座標X
+ * @param dir *humanが向きたい方向
  */
 extern int HumanCollideTo(Human *human, Human **collided, int y, int x, int dir)
 {
-	const	Manager* manager = ManagerGetInstance();
-	Human	*to;
-	int		step;
-	int		saY, saX;
-	int		i, j, k, index, offs;
-	int 	tempHuman[NUM_HUMAN_HEIGHT * NUM_HUMAN_WIDTH];
-	int		tempTo[NUM_HUMAN_HEIGHT * NUM_HUMAN_WIDTH];
+	const Manager* manager = ManagerGetInstance();
+	Human *to;
+	int step;
+	int saY, saX;
+	int i, j, k, index, offs;
+	int tempHuman[NUM_HUMAN_HEIGHT * NUM_HUMAN_WIDTH + 1];// パーツ配列要素数分＋番兵 
+	int tempTo[NUM_HUMAN_HEIGHT * NUM_HUMAN_WIDTH + 1];// パーツ配列要素数分＋番兵
 
 	to = 0;
 	for (step = 0; step < manager->humansSize; ++step)
@@ -319,7 +338,9 @@ extern int HumanCollideTo(Human *human, Human **collided, int y, int x, int dir)
 					tempHuman[k++] = human->parts[index].value;
 				}
 			}
-			tempHuman[k] = -1;// 番兵 
+			tempHuman[k] = -1;// 番兵
+			if (debug)
+				ConsolePushStrStack("tempHuman size:%d, index k:%d\n", NELEMS(tempHuman), k);
 
 			// 衝突される側
 			k=0;
@@ -332,6 +353,8 @@ extern int HumanCollideTo(Human *human, Human **collided, int y, int x, int dir)
 				}
 			}
 			tempTo[k] = -1;// 番兵 
+			if (debug)
+				ConsolePushStrStack("tempTo size:%d, index k:%d\n", NELEMS(tempTo), k);
 
 			// 判定
 			for (i=0; tempHuman[i] != -1; i++)
@@ -353,17 +376,18 @@ extern int HumanCollideTo(Human *human, Human **collided, int y, int x, int dir)
 	return 1;//衝突なし
 }
 
-/* Human型変数がHuman型変数へ、光線(Ray)を投げる(cast)
- * @ret				光線が当たったとき、当たった対象のアドレス。当たらなければ NULL。
- * @param	*human	光線を投げる本人。
- * @param	*dist	光線が当たったとき、座標の2点間の距離を格納。
+/**
+ * Human型変数がHuman型変数へ、光線(Ray)を投げる(cast)
+ * @return 光線が当たったとき、当たった対象のアドレス。当たらなければ NULL。
+ * @param *human 光線を投げる本人。
+ * @param *dist 光線が当たったとき、座標の2点間の距離を格納。
  */
 extern Human* HumanRaycast(Human *human, int *dist, int height, int width)
 {
-	Human	*to;
-	int		i;
-	int		current_dist	= -1;
-	int		min_dist		= -1;
+	Human *to;
+	int i;
+	int current_dist = -1;
+	int min_dist = -1;
 	const Manager* manager = ManagerGetInstance();
 	Human* nearhuman = NULL;
 
@@ -427,7 +451,8 @@ extern Human* HumanRaycast(Human *human, int *dist, int height, int width)
 	}
 }
 
-/* humanの体力にダメージを与える
+/**
+ * humanの体力にダメージを与えて、エフェクトを登録する。
  * @param *human	ダメージを与える対象
  * @param dmg		ダメージ量
  */
@@ -453,7 +478,8 @@ extern int HumanApplyDammage (Human *human, int dmg)
 	return 1;
 }
 
-/* humanをノックバックさせる。
+/**
+ * humanをノックバックさせる。
  * @param *human	ノックバックさせる対象
  * @param dirFrom	ノックバックさせる方向
  */
@@ -480,7 +506,9 @@ extern int HumanKnockBack(Human *human, Direction dirFrom)
 	return 0;// 失敗
 }
 
-/* ブレッドクラムを初期化 */
+/**
+ * ブレッドクラムを初期化
+ */
 extern void HumanInitBreadCrumb(Human *human)
 {
 	for (int i = 0; i < NELEMS(human->breadcrumbs); ++i)
@@ -490,7 +518,9 @@ extern void HumanInitBreadCrumb(Human *human)
 	}
 }
 
-/* ブレッドクラムを落とす */
+/**
+ * ブレッドクラムを落とす
+ */
 extern void HumanDropBreadCrumb(Human *human)
 {
 	for (int i = NELEMS(human->breadcrumbs) - 1; i > 0; --i)
@@ -500,11 +530,12 @@ extern void HumanDropBreadCrumb(Human *human)
 	human->breadcrumbs[0] = human->pos;
 }
 
-/* ブレッドクラムを探す
- * @ret				ブレッドクラムを見つけたら真、その場合 仮引数*foundposにブレッドクラムの座標を格納する。でなければ偽。
- * @param *human	ブレッドクラムを探す人
- * @param *target	ブレッドクラムを落とす人
- * @param *foundpos	ブレッドクラムを発見した場合、その位置を格納。
+/**
+ * ブレッドクラムを探す
+ * @return ブレッドクラムを見つけたら真、その場合 仮引数*foundposにブレッドクラムの座標を格納する。でなければ偽。
+ * @param *human ブレッドクラムを探す人
+ * @param *target ブレッドクラムを落とす人
+ * @param *foundpos ブレッドクラムを発見した場合、その位置を格納。
  */
 extern int HumanFindBreadCrumb(Human *human, Human *target, Position *foundpos)
 {

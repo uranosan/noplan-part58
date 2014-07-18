@@ -4,7 +4,7 @@
 #include <time.h>
 #include "Maze.h"
 
-static const bool debug = true;
+static const bool debug = false;
 
 /*---------------------------------------------------------------------------
   Maze: Prototype Static Functions
@@ -480,7 +480,8 @@ static int LookupStartToGoal(WayPoint *stat, WayPoint *goal, const int maxLimit)
 			if (res >= 0)
 			{
 				// found goal.
-				if (debug) printf("found route: depth %2d:(%2d,%2d)->(%2d,%2d)\n", res, stat->pos.y, stat->pos.x, goal->pos.y, goal->pos.x );
+				if (debug)
+					printf("found route: depth %2d:(%2d,%2d)->(%2d,%2d)\n", res, stat->pos.y, stat->pos.x, goal->pos.y, goal->pos.x );
 				return res;
 			}
 		}
